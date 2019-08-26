@@ -1,13 +1,16 @@
 <template>
 <div class="app">
   <div id="app">
+    <!--- 
     <img src="https://vuejs.org/images/logo.png">
+    --->
   </div>
-  <div class="Funcao">
+
+  <div id="funcaoPrincipal" class="Funcao">
     <a>
       <vue-mathjax :formula="fdex"></vue-mathjax>
     </a>
-    <div class="Funcao">
+    <div id="div-x5" class="Funcao">
       <div>
           <input class="inputX" type="text" id="x5" />  
       </div>
@@ -16,7 +19,7 @@
       </div>
     </div>
 
-    <div class="Funcao">
+    <div id="div-x4" class="Funcao">
       <div>
           <input class="inputX" type="text" id="x4" />  
       </div>
@@ -25,7 +28,7 @@
       </div>
     </div>
 
-    <div class="Funcao">
+    <div id="div-x3" class="Funcao">
       <div>
           <input class="inputX" type="text" id="x3" />  
       </div>
@@ -34,7 +37,7 @@
       </div>
     </div>
 
-    <div class="Funcao">
+    <div id="div-x2" class="Funcao">
       <div>
           <input class="inputX" type="text" id="x2" />  
       </div>
@@ -43,18 +46,35 @@
       </div>
     </div>
 
-    <div class="Funcao">
+    <div id="div-x1" class="Funcao">
       <div>
-          <input class="inputX" type="text" id="xf" />  
+          <input class="inputX" type="text" id="x1" />  
       </div>
       <div>
-        <vue-mathjax class="labelInput" :formula="'$$x$$'"></vue-mathjax>  
+        <vue-mathjax class="labelInput" :formula="'$$x+$$'"></vue-mathjax>  
+      </div>
+    </div>
+
+    <div id="div-xf" class="Funcao">
+      <div>
+          <input class="inputX" type="text" id="xf" />  
       </div>
     </div>
 
   </div>
-</div>
 
+  <div id="dadosAdicionais">
+    <div id="epsilon" >
+
+    </div>
+
+    <div id="criterioDeParada">
+
+    </div>
+
+  </div>
+
+</div>
 </template>
 
 <script>
@@ -63,12 +83,10 @@ export default {
   components: {
     'vue-mathjax': VueMathjax
   },
-  name: 'HelloWorld',
+  name: 'App',
   data () {
     return {
-      formula: '$$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.$$',
       fdex: '$$f(x)=$$',
-      msg: 'Welcome to Your Vue.js App'
     }
   }
 }

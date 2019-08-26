@@ -1,7 +1,7 @@
 {
-  "name": "functioner",
-  "description": "Teste de exibição de funções usando Vue",
-  "author": "Matheus Muriel <matheus.muriel@outlook.com>",
+  "name": "Djanguladora",
+  "description": "Calculo de zero de funções utilizando o metodo da bisseção",
+  "author": "Matheus Muriel <matheus.muriel@edu.unifil.br>",
   "private": true,
   "scripts": {
     "watchify": "watchify -vd -p browserify-hmr -e src/main.js -o dist/build.js",
