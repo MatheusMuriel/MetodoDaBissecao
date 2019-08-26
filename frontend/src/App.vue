@@ -6,7 +6,7 @@
     --->
   </div>
 
-  <div id="funcaoPrincipal" class="Funcao">
+  <header class="Funcao">
     <a>
       <vue-mathjax :formula="fdex"></vue-mathjax>
     </a>
@@ -61,18 +61,39 @@
       </div>
     </div>
 
+  </header>
+
+  <div class="secaoDeElementos">
+    <section class="dadosAdicionais">
+      <div class="epsilon">
+        <div class="labelEpsilon">
+          <vue-mathjax :formula="epsilon"></vue-mathjax>  
+        </div>
+        <div>
+            <input class="inputEpsilon" type="text" id="epsilon" />  
+        </div>
+      </div>
+
+      <div class="criterioDeParada">
+        <div>
+          <p>Criterio de parada: {{criterioDeParada}}</p>
+        </div>
+      </div>
+    </section>
+
+    <aside class="botaoCalcular">
+      <button class="botaoCalcular" v-on:click="calcular()" >
+        Calcular
+      </button>
+    </aside>
   </div>
 
-  <div id="dadosAdicionais">
-    <div id="epsilon" >
 
+  <footer>
+    <div>
+      Blablabla
     </div>
-
-    <div id="criterioDeParada">
-
-    </div>
-
-  </div>
+  </footer>
 
 </div>
 </template>
@@ -87,12 +108,25 @@ export default {
   data () {
     return {
       fdex: '$$f(x)=$$',
+      epsilon: '$$\\varepsilon:$$',
+      criterioDeParada: 'não implementado'
+    }
+  },methods: {
+    calcular: function(){
+      
     }
   }
 }
 </script>
 
 <style scoped>
+.app{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 60px;
+}
 h1, h2 {
   font-weight: normal;
 }
@@ -103,9 +137,6 @@ ul {
 li {
   display: inline-block;
   margin: 0 10px;
-}
-a {
-  color: #42b983;
 }
 .Funcao{
   display: flex;
@@ -122,12 +153,57 @@ a {
   width: 20px;
   height: 20px;
 }
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.secaoDeElementos{
+  display: table;
+  align-items: center;
+  width: 30%;
+}
+.secaoDeElementos .dadosAdicionais{
+  display: list-item;
+  justify-content: left;
+  align-items: center;
+  white-space: pre;
+  line-height: 1px;
+  float: left;
+  width: 50%;
+}
+
+.secaoDeElementos .dadosAdicionais .epsilon{
+  display: flex;
+  align-items: center;
+  font-size: 40px;
+  white-space: nowrap;
+}
+
+.secaoDeElementos .dadosAdicionais .epsilon .labelEpsilon{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  font-size:40px;
+}
+
+.secaoDeElementos .dadosAdicionais .epsilon .inputEpsilon{
+  width: 40px;
+  height: 30px;
+}
+.secaoDeElementos .dadosAdicionais .criterioDeParada{
+  width: 10%;
+  font-size: 15px;
+  color:darkgray;
+}
+.secaoDeElementos .botaoCalcular{
+  margin-left: 50%;
+  align-items: right;
+}
+
+footer{
+  bottom: 0;
+  height: 40px;
+  position: fixed;
+  width: 100%;
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  width:100%;
 }
 </style>
