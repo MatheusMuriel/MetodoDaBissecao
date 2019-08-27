@@ -69,7 +69,8 @@
           <vue-mathjax class="labelEpsilon" :formula="epsilon"></vue-mathjax>:
         </div>
         <div>
-            <input class="inputEpsilon" type="text" id="epsilon" />  
+          <!-- Adicionar Limitações de valores -->
+            <input class="inputEpsilon" type="number" id="epsilon"/>  
         </div>
       </div>
 
@@ -99,8 +100,13 @@
 </template>
 
 <script>
-import { VueMathjax } from 'vue-mathjax'
+import DjanguladoraAPI from './services/DjanguladoraAPI';
+import { VueMathjax } from 'vue-mathjax';
 import axios from 'axios'
+import VueAxios from 'vue-axios'
+import Vue from 'vue'
+ 
+Vue.use(VueAxios, axios)
 export default {
   components: {
     'vue-mathjax': VueMathjax
@@ -114,19 +120,37 @@ export default {
     }
   },methods: {
     calcular: function(){
+        const valorX5 = x5.value
+        const valorX4 = x4.value
+        const valorX3 = x3.value
+        const valorX2 = x2.value
+        const valorX1 = x1.value
+        const valorXf = xf.value
+        const valorEpsilon = epsilon.value
+
+        var arr = [
+          valorX5,
+          valorX4,
+          valorX3,
+          valorX2,
+          valorX1,
+          valorXf,
+          valorEpsilon
+        ]
         
+        let urlPost = 'http://localhost:8000/' + 'calculo/'
+        
+        Vue.axios.post('http://localhost:8000/calculo/', arr)
+            .then(function (response) {
+              console.log('espião');
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+
+        // DjanguladoraAPI.calculaPost(valorX5, valorX4, valorX3, valorX2, valorX1, valorXf, valorEpsilon)
     }
-  },
-  // Fetches posts when the component is created.
-  created() {
-    axios.get(`http://localhost:8000/calculo`)
-    .then(response => {
-      // JSON responses are automatically parsed.
-      console.log(response.data)
-    })
-    .catch(e => {
-      this.errors.push(e)
-    })
   }
 }
 </script>
