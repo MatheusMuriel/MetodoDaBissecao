@@ -1,9 +1,8 @@
 <template>
 <div class="app">
   <div id="app">
-    <!--- 
+    <!--- --->
     <img src="https://vuejs.org/images/logo.png">
-    --->
   </div>
 
   <header class="Funcao">
@@ -64,10 +63,10 @@
   </header>
 
   <div class="secaoDeElementos">
-    <section class="dadosAdicionais">
+    <div class="dadosAdicionais">
       <div class="epsilon">
         <div class="labelEpsilon">
-          <vue-mathjax :formula="epsilon"></vue-mathjax>  
+          <vue-mathjax class="labelEpsilon" :formula="epsilon"></vue-mathjax>:
         </div>
         <div>
             <input class="inputEpsilon" type="text" id="epsilon" />  
@@ -79,7 +78,7 @@
           <p>Criterio de parada: {{criterioDeParada}}</p>
         </div>
       </div>
-    </section>
+    </div>
 
     <aside class="botaoCalcular">
       <button class="botaoCalcular" v-on:click="calcular()" >
@@ -88,18 +87,20 @@
     </aside>
   </div>
 
-
+  
   <footer>
     <div>
-      Blablabla
+      {{ info }}
     </div>
   </footer>
+  
 
 </div>
 </template>
 
 <script>
 import { VueMathjax } from 'vue-mathjax'
+import axios from 'axios'
 export default {
   components: {
     'vue-mathjax': VueMathjax
@@ -108,13 +109,24 @@ export default {
   data () {
     return {
       fdex: '$$f(x)=$$',
-      epsilon: '$$\\varepsilon:$$',
+      epsilon: '$$\\varepsilon$$',
       criterioDeParada: 'não implementado'
     }
   },methods: {
     calcular: function(){
-      
+        
     }
+  },
+  // Fetches posts when the component is created.
+  created() {
+    axios.get(`http://localhost:8000/calculo`)
+    .then(response => {
+      // JSON responses are automatically parsed.
+      console.log(response.data)
+    })
+    .catch(e => {
+      this.errors.push(e)
+    })
   }
 }
 </script>
@@ -126,6 +138,9 @@ export default {
   justify-content: center;
   align-items: center;
   line-height: 60px;
+}
+img {
+  width: 80px;
 }
 h1, h2 {
   font-weight: normal;
@@ -159,7 +174,6 @@ li {
   width: 30%;
 }
 .secaoDeElementos .dadosAdicionais{
-  display: list-item;
   justify-content: left;
   align-items: center;
   white-space: pre;
