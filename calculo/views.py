@@ -12,7 +12,7 @@ def calcular(request):
 	if request.method == 'POST':
 		dados = str(request.body)
 		v = spliter_request(dados)
-		c = executarCalculo(v[0], v[1], v[2], v[3], v[4], v[5])
+		c = executarCalculo(v[0], v[1], v[2], v[3], v[4], v[5], v[6])
 		return HttpResponse("a")
 	pass
 
@@ -20,6 +20,6 @@ def spliter_request(dados):
 	dados_limpos = re.sub(r"(\[|\]|\\|\'|b|\")","",dados)
 	return dados_limpos.split(",")
 
-def executarCalculo(x5, x4, x3, x2, x1, x):
-	calc = factor(x5, x4, x3, x2, x1, x)
+def executarCalculo(x5, x4, x3, x2, x1, x, epsilon):
+	calc = factor(x5, x4, x3, x2, x1, x, epsilon)
 	calc.calcular()

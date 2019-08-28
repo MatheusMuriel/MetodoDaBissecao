@@ -137,7 +137,6 @@ export default {
           valorXf,
           valorEpsilon
         ]
-        
         axios.post('http://localhost:8000/calculo/', arr)
             .then(function (response) {
               console.log(response);
