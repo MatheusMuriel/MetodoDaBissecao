@@ -138,11 +138,8 @@ export default {
           valorEpsilon
         ]
         
-        let urlPost = 'http://localhost:8000/' + 'calculo/'
-        
-        Vue.axios.post('http://localhost:8000/calculo/', arr)
+        axios.post('http://localhost:8000/calculo/', arr)
             .then(function (response) {
-              console.log('espião');
               console.log(response);
             })
             .catch(function (error) {
