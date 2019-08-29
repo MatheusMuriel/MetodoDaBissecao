@@ -87,7 +87,7 @@ class CalculadoraFuncao():
         calc_intervalo = self.calcularIntervalo(resultado, intervalo)
         self.filtraParaCalcular(self.calc_intervalo_real_num, calc_intervalo)
         print(self.lista_intervalos)
-        print("Ponto de parada")
+        return(self.lista_intervalos)
 
 """
 Tad para representar um resposta
