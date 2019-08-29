@@ -43,7 +43,6 @@ class CalculadoraFuncao():
         return resultadoFinal
 
     def calcZeroReais (self, a, b, intervalo):
-
         resultFdeX = 0
         interacao = (a+b)/2
         criterio_de_parada = abs((b-a)/2)
