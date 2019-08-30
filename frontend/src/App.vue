@@ -11,7 +11,7 @@
     </a>
     <div id="div-x5" class="Funcao">
       <div>
-          <input class="inputX" type="text" id="x5" />  
+          <input class="inputX" type="text" id="x5" value="0"/>
       </div>
       <div>
         <vue-mathjax class="labelInput" :formula="'$$x^5+$$'"></vue-mathjax>  
@@ -20,7 +20,7 @@
 
     <div id="div-x4" class="Funcao">
       <div>
-          <input class="inputX" type="text" id="x4" />  
+          <input class="inputX" type="text" id="x4" value="0"/>  
       </div>
       <div>
         <vue-mathjax class="labelInput" :formula="'$$x^4+$$'"></vue-mathjax>  
@@ -29,7 +29,7 @@
 
     <div id="div-x3" class="Funcao">
       <div>
-          <input class="inputX" type="text" id="x3" />  
+          <input class="inputX" type="text" id="x3" value="1"/>  
       </div>
       <div>
         <vue-mathjax class="labelInput" :formula="'$$x^3+$$'"></vue-mathjax>  
@@ -38,7 +38,7 @@
 
     <div id="div-x2" class="Funcao">
       <div>
-          <input class="inputX" type="text" id="x2" />  
+          <input class="inputX" type="text" id="x2" value="0"/>  
       </div>
       <div>
         <vue-mathjax class="labelInput" :formula="'$$x^2+$$'"></vue-mathjax>  
@@ -47,7 +47,7 @@
 
     <div id="div-x1" class="Funcao">
       <div>
-          <input class="inputX" type="text" id="x1" />  
+          <input class="inputX" type="text" id="x1" value="-9"/>  
       </div>
       <div>
         <vue-mathjax class="labelInput" :formula="'$$x+$$'"></vue-mathjax>  
@@ -56,7 +56,7 @@
 
     <div id="div-xf" class="Funcao">
       <div>
-          <input class="inputX" type="text" id="xf" />  
+          <input class="inputX" type="text" id="xf" value="3"/>  
       </div>
     </div>
 
@@ -70,7 +70,7 @@
         </div>
         <div>
           <!-- Adicionar Limitações de valores -->
-            <input class="inputEpsilon" type="number" id="epsilon"/>  
+            <input class="inputEpsilon" type="number" id="epsilon" value="-3"/>  
         </div>
       </div>
 
@@ -83,8 +83,19 @@
     </aside>
   </div>
 
-  <b-table striped hover :items="items"></b-table>
-  
+  <component v-bind:is="currentTabComponent"></component>
+
+   <table id="tabelaIteracoes" ref="tabelaIteracoes" class="tabelaResultado" align="center">
+        <thead>
+            <tr>
+                <th>Iteração</th>
+                <th><vue-mathjax :formula="'$$x$$'"></vue-mathjax></th>
+                <th><vue-mathjax :formula="'$$f(x)$$'"></vue-mathjax></th>
+                <th><vue-mathjax :formula="'$$b-a$$'"></vue-mathjax></th>
+            </tr>
+        </thead>
+    </table>
+
   <footer>
     <div>
       {{ info }}
@@ -113,74 +124,77 @@ export default {
       fdex: '$$f(x)=$$',
       epsilon: '$$\\varepsilon$$',
       info: 'Em desenvolvimento',
-      items: [
-          { Iteração: "1", x: "05", FdeX: "09", BmenosA: "0"},
-          { Iteração: "2", x: "06", FdeX: "09", BmenosA: "0"},
-          { Iteração: "3", x: "07", FdeX: "09", BmenosA: "0"},
-          { Iteração: "4", x: "08", FdeX: "09", BmenosA: "0"}
-        ]
+      x1: 0,
     }
   },methods: {
     calcular: function(){
-        const valorX5 = x5.value
-        const valorX4 = x4.value
-        const valorX3 = x3.value
-        const valorX2 = x2.value
-        const valorX1 = x1.value
-        const valorXf = xf.value
-        const valorEpsilon = epsilon.value
+      var arrValores = [x5.value, x4.value, x3.value, x2.value, x1.value, xf.value, epsilon.value]
 
-        var arr = [
-          valorX5,
-          valorX4,
-          valorX3,
-          valorX2,
-          valorX1,
-          valorXf,
-          valorEpsilon
-        ]
-        axios.post('http://localhost:8000/calculo/', arr)
-            .then(function (response) {
-              self.this.items.push({ age: 9999, first_name: 'bbbbbbbbbbbb', last_name: 'aaaaaaaaaaaaaaa' })
-              
-              var dados = response.data
-              console.log(dados);
+      console.log(this)
 
-              var lDados = dados.split("$$$")
-              console.log(lDados)
+      axios.post('http://localhost:8000/calculo/', arrValores)
+          .then((response) => {
+            var dados = response.data
 
-              // Começando em 1 por causa dos caracteres especiais de inicio da respostas
-              for (let i = 1; i < lDados.length; i++){
-                var interacoes = lDados[i].split("#")
-                console.log(interacoes)
+            var intervalos = dados.split("$$$")
+            console.log("Intervalos: ", intervalos)
 
-                let valores_intervalo = interacoes[0].split("::")
-                console.log(valores_intervalo)
-                let arr_valores_intervalo = []
-                for (let j = 1; j < interacoes.length; j++){
-                  let str_da_vez = interacoes[j]
-                  console.log(interacoes[j])
-                  let num_iteracao = str_da_vez.substring(0,str_da_vez.indexOf("["))
-                  console.log(num_iteracao)
+            var tabela = (this.$refs.tabelaIteracoes);
+            var colunas = 4
 
-                  let valores_lista = str_da_vez.substring(str_da_vez.indexOf("[")+1,str_da_vez.indexOf("]")).split(";")
-                  console.log(valores_lista)
-                  let valor_x = valores_lista[0]
-                  let valor_fdex = valores_lista[1]
-                  let valor_b_a = valores_lista[2]
-                  let linha = {interacao: num_iteracao, x: valor_x, fdex:valor_fdex, b_a: valor_b_a}
-                  // this.items.push({ age: 9999, first_name: 'bbbbbbbbbbbb', last_name: 'aaaaaaaaaaaaaaa' })
+            // Começando em 1 por causa dos caracteres especiais de inicio da respostas
+            for (let i = 1; i < intervalos.length; i++){
+
+              let interacoes = intervalos[i].split("#")
+              console.log("Interações: ", interacoes)
+
+              let valores_intervalo = interacoes[0].split("::")
+              console.log("Valores do intervalo: " + valores_intervalo)
+
+              // Começa em 1 porq o primeiro indice contem os valores do intervalo
+              for (let j = 1; j < interacoes.length; j++){
+                
+                let str_da_vez = interacoes[j]
+                console.log("Iteracao da vez: " + str_da_vez)
+                
+                let num_iteracao = str_da_vez.substring(0,str_da_vez.indexOf("["))
+                console.log("Numero da iteração: " + num_iteracao)
+                
+                let valores_lista = str_da_vez.substring(str_da_vez.indexOf("[")+1,str_da_vez.indexOf("]")).split(";")
+                console.log("Lista de valores: " + valores_lista)
+                
+                let valor_x = valores_lista[0]
+                let valor_fdex = valores_lista[1]
+                let valor_b_a = valores_lista[2]
+                
+                let arrDados = [num_iteracao, valor_x, valor_fdex, valor_b_a]
+
+                let novaLinha = tabela.insertRow();
+                for(let k = 0; k < colunas; k++){
+                  let novaCelula = novaLinha.insertCell();
+                  novaCelula.innerHTML = "<tr><td>" + arrDados[k] + "</td></tr>";
                 }
 
               }
-              
-              
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      // FIM DO METODO CALCULA
+    },
+    processaTabela: function(arrDados){
+      console.log(this.$refs.tabelaIteracoes)
 
-        // DjanguladoraAPI.calculaPost(valorX5, valorX4, valorX3, valorX2, valorX1, valorXf, valorEpsilon)
+      var tabela = (this.$refs.tabelaIteracoes);
+      var novaLinha = tabela.insertRow();
+
+      var colunas = 4
+
+      for(let i = 0; i < colunas; i++){
+        var novaCelula = novaLinha.insertCell();
+        novaCelula.innerHTML = "<tr><td>" + arrDados[i] + "</td></tr>";
+      }
     }
   }
 }
@@ -263,6 +277,9 @@ li {
 .secaoDeElementos .botaoCalcular{
   margin-left: 50%;
   align-items: right;
+}
+table, td, th {
+  border: 1px solid black;
 }
 
 footer{
