@@ -99,7 +99,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import VueMathjax from 'vue-mathjax'
+import { VueMathjax } from 'vue-mathjax'
 import BootstrapVue from 'bootstrap-vue'
  
 Vue.use(VueAxios, axios)
@@ -114,10 +114,10 @@ export default {
       epsilon: '$$\\varepsilon$$',
       info: 'Em desenvolvimento',
       items: [
-          { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-          { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-          { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
-          { age: 38, first_name: 'Jami', last_name: 'Carney' }
+          { Iteração: "1", x: "05", FdeX: "09", BmenosA: "0"},
+          { Iteração: "2", x: "06", FdeX: "09", BmenosA: "0"},
+          { Iteração: "3", x: "07", FdeX: "09", BmenosA: "0"},
+          { Iteração: "4", x: "08", FdeX: "09", BmenosA: "0"}
         ]
     }
   },methods: {
