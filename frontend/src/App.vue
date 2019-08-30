@@ -96,18 +96,16 @@
 </template>
 
 <script>
-import { VueMathjax } from 'vue-mathjax';
+import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import Vue from 'vue'
-import Tabela from './Tabela.vue'
+import VueMathjax from 'vue-mathjax'
 import BootstrapVue from 'bootstrap-vue'
  
 Vue.use(VueAxios, axios)
 export default {
   components: {
-    'vue-mathjax': VueMathjax,
-    'tabela-resposta': Tabela
+    'vue-mathjax': VueMathjax
   },
   name: 'App',
   data () {
