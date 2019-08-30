@@ -11,7 +11,7 @@
     </a>
     <div id="div-x5" class="Funcao">
       <div>
-          <input class="inputX" type="text" id="x5" value="0"/>
+          <input class="inputX" v-autowidth="{maxWidth: '960px', minWidth: '20px', comfortZone: 0}" type="text" id="x5" value="0"/>
       </div>
       <div>
         <vue-mathjax class="labelInput" :formula="'$$x^5+$$'"></vue-mathjax>  
@@ -20,7 +20,7 @@
 
     <div id="div-x4" class="Funcao">
       <div>
-          <input class="inputX" type="text" id="x4" value="0"/>  
+          <input class="inputX" v-autowidth="{maxWidth: '960px', minWidth: '20px', comfortZone: 0}" type="text" id="x4" value="0"/>  
       </div>
       <div>
         <vue-mathjax class="labelInput" :formula="'$$x^4+$$'"></vue-mathjax>  
@@ -29,7 +29,7 @@
 
     <div id="div-x3" class="Funcao">
       <div>
-          <input class="inputX" type="text" id="x3" value="1"/>  
+          <input class="inputX" v-autowidth="{maxWidth: '960px', minWidth: '20px', comfortZone: 0}" type="text" id="x3" value="1"/>  
       </div>
       <div>
         <vue-mathjax class="labelInput" :formula="'$$x^3+$$'"></vue-mathjax>  
@@ -38,7 +38,7 @@
 
     <div id="div-x2" class="Funcao">
       <div>
-          <input class="inputX" type="text" id="x2" value="0"/>  
+          <input class="inputX" v-autowidth="{maxWidth: '960px', minWidth: '20px', comfortZone: 0}" type="text" id="x2" value="0"/>  
       </div>
       <div>
         <vue-mathjax class="labelInput" :formula="'$$x^2+$$'"></vue-mathjax>  
@@ -47,7 +47,7 @@
 
     <div id="div-x1" class="Funcao">
       <div>
-          <input class="inputX" type="text" id="x1" value="-9"/>  
+          <input class="inputX" v-autowidth="{maxWidth: '960px', minWidth: '20px', comfortZone: 0}" type="text" id="x1" value="-9"/>  
       </div>
       <div>
         <vue-mathjax class="labelInput" :formula="'$$x+$$'"></vue-mathjax>  
@@ -56,7 +56,7 @@
 
     <div id="div-xf" class="Funcao">
       <div>
-          <input class="inputX" type="text" id="xf" value="3"/>  
+          <input class="inputX" v-autowidth="{maxWidth: '960px', minWidth: '20px', comfortZone: 0}" type="text" id="xf" value="3"/>  
       </div>
     </div>
 
@@ -69,8 +69,11 @@
           <vue-mathjax class="labelEpsilon" :formula="epsilon"></vue-mathjax>:
         </div>
         <div>
-          <!-- Adicionar Limitações de valores -->
-            <input class="inputEpsilon" type="number" id="epsilon" value="-3"/>  
+            <input 
+            type="number" 
+            id="epsilon"
+            v-autowidth="{maxWidth: '960px', minWidth: '35px', comfortZone: 0}"
+            value="-3"/>  
         </div>
       </div>
 
@@ -83,31 +86,34 @@
     </aside>
   </div>
 
-  <ul id="tabs" ref="tabs" class="nav nav-tabs">
-    <li class="nav-item">
-      <a id="tabBase" ref="tabBase" class="nav-link active" href="#" style="display: none">Base</a>
-    </li>
-  </ul>
+  <div id="divTabs" ref="divTabs" style="display: none" >
+    <h5>Intervalos Encontrados</h5>
+    <ul id="tabs" ref="tabs" class="nav nav-tabs">
+      <li class="nav-item">
+        <a id="tabBase" ref="tabBase" class="nav-link active" href="#" style="display: none">Base</a>
+      </li>
+    </ul>
+  </div>
 
-    <div id="tabelas" ref="tabelas">
-      <table id="tabelaIteracoes" ref="tabelaIteracoes" class="table table-bordered">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Iteração</th>
-                <th scope="col"><vue-mathjax :formula="'$$x$$'"></vue-mathjax></th>
-                <th scope="col"><vue-mathjax :formula="'$$f(x)$$'"></vue-mathjax></th>
-                <th scope="col"><vue-mathjax :formula="'$$b-a$$'"></vue-mathjax></th>
-            </tr>
-        </thead>
-        <tbody id="corpoTabela" ref="corpoTabela" class="table table-bordered">
-        </tbody>
-      </table>
-    </div>
-
+  <div id="tabelas" ref="tabelas">
+    <table id="tabelaIteracoes" ref="tabelaIteracoes" class="table table-bordered" style="display: none">
+      <thead class="thead-dark">
+          <tr>
+              <th scope="col">Iteração</th>
+              <th scope="col"><vue-mathjax :formula="'$$x$$'"></vue-mathjax></th>
+              <th scope="col"><vue-mathjax :formula="'$$f(x)$$'"></vue-mathjax></th>
+              <th scope="col"><vue-mathjax :formula="'$$b-a$$'"></vue-mathjax></th>
+          </tr>
+      </thead>
+      <tbody id="corpoTabela" ref="corpoTabela" class="table table-bordered">
+      </tbody>
+    </table>
+  </div>
   
   <footer>
     <div>
       {{ info }}
+      <a href="https://github.com/MatheusMuriel/Djanguladora">GitHub</a>
     </div>
   </footer>
   
@@ -121,7 +127,9 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import { VueMathjax } from 'vue-mathjax'
 import bModal from 'bootstrap-vue/es/components/modal/modal'
-
+import VueInputAutowidth from 'vue-input-autowidth'
+ 
+Vue.use(VueInputAutowidth)
 Vue.use(VueAxios, axios)
 export default {
   components: {
@@ -133,8 +141,8 @@ export default {
     return {
       fdex: '$$f(x)=$$',
       epsilon: '$$\\varepsilon$$',
-      info: 'Em desenvolvimento',
-      x1: 0,
+      info: 'Manhani e Muriel | UniFil - 2019',
+      repositorio: 'https://github.com/MatheusMuriel/Djanguladora',
     }
   },methods: {
     verTabela(){
@@ -145,12 +153,18 @@ export default {
 
       axios.post('http://localhost:8000/calculo/', arrValores)
           .then((response) => {
+            for(let i = 1; i < quantTabs; i++){
+              let e = $refs.tabs.getElementById("tab"+i)
+              this.$refs.tabs.appendChild(e)
+            }
+
             var dados = response.data
 
             var intervalos = dados.split("$$$")
             console.log("Intervalos: ", intervalos)
 
             var tabelas = (this.$refs.tabelas);
+            
 
             var tabela = (this.$refs.corpoTabela);
             var colunas = 4
@@ -158,6 +172,7 @@ export default {
             var tabs = (this.$refs.tabs);
             var quantTabs = intervalos.length
 
+            this.$refs.divTabs.style.display = ""
             // Começando em 1 por causa dos caracteres especiais de inicio da respostas
             for (let i = 1; i < intervalos.length; i++){
 
@@ -168,26 +183,21 @@ export default {
               console.log("Valores do intervalo: " + valores_intervalo)
               
 
-              let nomeTab = String(valores_intervalo[0]) + "::" + String(valores_intervalo[1])
-              let strTab = "<a class=\"nav-link active\" href=\"#\">" + nomeTab + "</a>"
+              let nomeTab = String(valores_intervalo[0]) + " : " + String(valores_intervalo[1])
 
               let tabBase = (this.$refs.tabBase);
 
               let tabClone = tabBase.cloneNode(true);
               tabClone.style.display = "block"
-
+              tabClone.setAttribute("id", "tab"+i)
+              tabClone.setAttribute("ref","tab"+i)
               let li = document.createElement('li');
               li.setAttribute("class", "nav-item")
-
-              //let a = document.createElement('button');
-
-              //a.className = "nav-link";
 
               let nomeTabela = "tabela" + i
 
               tabClone.innerHTML = nomeTab
 
-              //li.appendChild(a)
               tabs.appendChild(tabClone);
 
               let tabela_base = (this.$refs.tabelaIteracoes);
@@ -202,7 +212,7 @@ export default {
                   console.log(e)
                   e.style.display = "none"
                 }
-                tabelaClone.style.display = "block"
+                tabelaClone.style.display = "table"
               })
 
               // Começa em 1 porq o primeiro indice contem os valores do intervalo
@@ -226,9 +236,11 @@ export default {
                 let novaLinha = tabelaClone.insertRow();
                 let strLinha = "<tr>"
                 for(let k = 0; k < colunas; k++){
-                  var thTag = "<th scope=\"row\">";
-                  let strCelula = k == 0 ? thTag + arrDados[k] + "</th>" : "<td>" + arrDados[k] + "</td>";
+                  var stTd = " style=\"padding-inline-end: 20px; padding-inline-start: 10px; border: 1px solid black;\" "
+                  var thTag = "<th " + stTd + "scope=\"row\">";
+                  let strCelula = k == 0 ? thTag + arrDados[k] + "</th>" : "<td " + stTd + ">" + arrDados[k] + "</td>";
                   strLinha += strCelula;
+
                 }
                 novaLinha.innerHTML = strLinha + "</tr>";
               }
@@ -248,9 +260,16 @@ export default {
 @import './assets/styles/variables';
 @import './assets/styles/bootstrap';
 
-table, td, th {
+table{
   border: 1px solid black;
-  display: none;
+}
+td{
+  padding: 10px;
+  padding-inline-end: 20px;
+  margin: 10px;
+  border-collapse: separate;  
+  border-spacing: 10px;
+  border: 1px solid black;
 }
 .navbar-nav li {
     margin-top: 8px;
@@ -262,6 +281,7 @@ table, td, th {
   justify-content: center;
   align-items: center;
   line-height: 60px;
+  width: 100%;
 }
 img {
   width: 80px;
@@ -271,11 +291,12 @@ h1, h2 {
 }
 ul {
   list-style-type: none;
-  padding: 0;
+  padding: 10px;
 }
 li {
   display: inline-block;
   margin: 0 10px;
+  padding: 10px;
 }
 .Funcao{
   display: flex;
@@ -303,13 +324,11 @@ li {
   white-space: pre;
   line-height: 1px;
   float: left;
-  width: 50%;
 }
 
 .secaoDeElementos .dadosAdicionais .epsilon{
   display: flex;
   align-items: center;
-  font-size: 40px;
   white-space: nowrap;
 }
 
@@ -319,30 +338,23 @@ li {
   align-items:center;
   font-size:40px;
 }
-
-.secaoDeElementos .dadosAdicionais .epsilon .inputEpsilon{
-  width: 40px;
-  height: 30px;
-}
-.secaoDeElementos .dadosAdicionais .criterioDeParada{
-  width: 10%;
-  font-size: 15px;
-  color:darkgray;
-}
 .secaoDeElementos .botaoCalcular{
   margin-left: 50%;
   align-items: right;
 }
-
+body{
+  width: 100%;
+  height: 100%;
+}
 footer{
   bottom: 0;
-  height: 40px;
-  position: fixed;
   width: 100%;
+  position: static;
+  top: 100%;
   display:flex;
+  font-size: 12px;
   justify-content:center;
   align-items:flex-end;
-  width:100%;
+  white-space: inherit;
 }
-
 </style>

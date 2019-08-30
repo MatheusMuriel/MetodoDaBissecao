@@ -5,7 +5,9 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import BootstrapVue from 'bootstrap-vue'
 import { Layout } from 'bootstrap-vue/es/components';
-
+import VueInputAutowidth from 'vue-input-autowidth'
+ 
+Vue.use(VueInputAutowidth)
 Vue.use(BootstrapVue)
 Vue.use(VueAxios, axios)
 Vue.use(VueMathjax)

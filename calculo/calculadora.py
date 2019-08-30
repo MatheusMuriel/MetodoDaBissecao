@@ -48,13 +48,13 @@ class CalculadoraFuncao():
         criterio_de_parada = abs((b-a)/2)
         resultFdeX = self.calcFdeX(interacao)
 
+        intervalo.adiciona_iteracao(interacao, resultFdeX, criterio_de_parada)
         if criterio_de_parada < self.epsilon:
             self.interacaoX.append(interacao)
             self.lista_intervalos.append(intervalo)
             return self.interacaoX
 
         print(interacao, resultFdeX, criterio_de_parada)
-        intervalo.adiciona_iteracao(interacao, resultFdeX, criterio_de_parada)
 
         self.interacaoX.append(interacao) #esse e o resultado do b - a
         self.interacaoFdeX.append(resultFdeX)
