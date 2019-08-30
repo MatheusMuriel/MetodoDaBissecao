@@ -83,19 +83,28 @@
     </aside>
   </div>
 
-  <component v-bind:is="currentTabComponent"></component>
+  <ul id="tabs" ref="tabs" class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" href="#">Active</a>
+    </li>
+  </ul>
 
-   <table id="tabelaIteracoes" ref="tabelaIteracoes" class="tabelaResultado" align="center">
-        <thead>
+    <div id="tabelas" ref="tabelas">
+      <table id="tabelaIteracoes" ref="tabelaIteracoes" class="table table-bordered">
+        <thead class="thead-dark">
             <tr>
-                <th>Iteração</th>
-                <th><vue-mathjax :formula="'$$x$$'"></vue-mathjax></th>
-                <th><vue-mathjax :formula="'$$f(x)$$'"></vue-mathjax></th>
-                <th><vue-mathjax :formula="'$$b-a$$'"></vue-mathjax></th>
+                <th scope="col">Iteração</th>
+                <th scope="col"><vue-mathjax :formula="'$$x$$'"></vue-mathjax></th>
+                <th scope="col"><vue-mathjax :formula="'$$f(x)$$'"></vue-mathjax></th>
+                <th scope="col"><vue-mathjax :formula="'$$b-a$$'"></vue-mathjax></th>
             </tr>
         </thead>
-    </table>
+        <tbody id="corpoTabela" ref="corpoTabela" class="table table-bordered">
+        </tbody>
+      </table>
+    </div>
 
+  
   <footer>
     <div>
       {{ info }}
@@ -111,12 +120,13 @@ import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import { VueMathjax } from 'vue-mathjax'
-import BootstrapVue from 'bootstrap-vue'
- 
+import bModal from 'bootstrap-vue/es/components/modal/modal'
+
 Vue.use(VueAxios, axios)
 export default {
   components: {
-    'vue-mathjax': VueMathjax
+    'vue-mathjax': VueMathjax,
+    'b-modal': bModal
   },
   name: 'App',
   data () {
@@ -127,10 +137,11 @@ export default {
       x1: 0,
     }
   },methods: {
+    verTabela(){
+      console.log("Ver tabela")
+    },
     calcular: function(){
       var arrValores = [x5.value, x4.value, x3.value, x2.value, x1.value, xf.value, epsilon.value]
-
-      console.log(this)
 
       axios.post('http://localhost:8000/calculo/', arrValores)
           .then((response) => {
@@ -139,8 +150,13 @@ export default {
             var intervalos = dados.split("$$$")
             console.log("Intervalos: ", intervalos)
 
-            var tabela = (this.$refs.tabelaIteracoes);
+            var tabelas = (this.$refs.tabelas);
+
+            var tabela = (this.$refs.corpoTabela);
             var colunas = 4
+
+            var tabs = (this.$refs.tabs);
+            var quantTabs = intervalos.length
 
             // Começando em 1 por causa dos caracteres especiais de inicio da respostas
             for (let i = 1; i < intervalos.length; i++){
@@ -150,6 +166,41 @@ export default {
 
               let valores_intervalo = interacoes[0].split("::")
               console.log("Valores do intervalo: " + valores_intervalo)
+              
+
+              let nomeTab = String(valores_intervalo[0]) + "::" + String(valores_intervalo[1])
+              let strTab = "<a class=\"nav-link active\" href=\"#\">" + nomeTab + "</a>"
+
+              let li = document.createElement('li');
+              li.setAttribute("class", "nav-item")
+
+              let a = document.createElement('button');
+
+              a.className = "nav-link";
+
+              let nomeTabela = "tabela" + i
+              
+              //a.setAttribute('v-on:click',"verTabela(" + i + ")");
+
+              a.innerHTML = nomeTab
+
+              li.appendChild(a)
+              tabs.appendChild(li);
+
+              let tabela_base = (this.$refs.tabelaIteracoes);
+
+              let tabelaClone = tabela_base.cloneNode(true);
+              tabelaClone.setAttribute("id", nomeTabela)
+              tabelaClone.setAttribute("ref", nomeTabela)
+
+              a.addEventListener("click", function(){
+                for(let i = 1; i < quantTabs; i++){
+                  let e = document.getElementById("tabela" + i)
+                  console.log(e)
+                  e.style.display = "none"
+                }
+                tabelaClone.style.display = "block"
+              })
 
               // Começa em 1 porq o primeiro indice contem os valores do intervalo
               for (let j = 1; j < interacoes.length; j++){
@@ -169,38 +220,39 @@ export default {
                 
                 let arrDados = [num_iteracao, valor_x, valor_fdex, valor_b_a]
 
-                let novaLinha = tabela.insertRow();
+                let novaLinha = tabelaClone.insertRow();
+                let strLinha = "<tr>"
                 for(let k = 0; k < colunas; k++){
-                  let novaCelula = novaLinha.insertCell();
-                  novaCelula.innerHTML = "<tr><td>" + arrDados[k] + "</td></tr>";
+                  var thTag = "<th scope=\"row\">";
+                  let strCelula = k == 0 ? thTag + arrDados[k] + "</th>" : "<td>" + arrDados[k] + "</td>";
+                  strLinha += strCelula;
                 }
-
+                novaLinha.innerHTML = strLinha + "</tr>";
               }
+
+              tabelas.appendChild(tabelaClone);
             }
           })
           .catch(function (error) {
             console.log(error);
           });
-      // FIM DO METODO CALCULA
-    },
-    processaTabela: function(arrDados){
-      console.log(this.$refs.tabelaIteracoes)
-
-      var tabela = (this.$refs.tabelaIteracoes);
-      var novaLinha = tabela.insertRow();
-
-      var colunas = 4
-
-      for(let i = 0; i < colunas; i++){
-        var novaCelula = novaLinha.insertCell();
-        novaCelula.innerHTML = "<tr><td>" + arrDados[i] + "</td></tr>";
-      }
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import './assets/styles/variables';
+@import './assets/styles/bootstrap';
+
+table, td, th {
+  border: 1px solid black;
+  display: none;
+}
+.navbar-nav li {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
 .app{
   display: flex;
   flex-direction: column;
@@ -278,9 +330,6 @@ li {
   margin-left: 50%;
   align-items: right;
 }
-table, td, th {
-  border: 1px solid black;
-}
 
 footer{
   bottom: 0;
@@ -292,4 +341,5 @@ footer{
   align-items:flex-end;
   width:100%;
 }
+
 </style>
