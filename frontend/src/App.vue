@@ -85,7 +85,7 @@
 
   <ul id="tabs" ref="tabs" class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link active" href="#">Active</a>
+      <a id="tabBase" ref="tabBase" class="nav-link active" href="#" style="display: none">Base</a>
     </li>
   </ul>
 
@@ -171,21 +171,24 @@ export default {
               let nomeTab = String(valores_intervalo[0]) + "::" + String(valores_intervalo[1])
               let strTab = "<a class=\"nav-link active\" href=\"#\">" + nomeTab + "</a>"
 
+              let tabBase = (this.$refs.tabBase);
+
+              let tabClone = tabBase.cloneNode(true);
+              tabClone.style.display = "block"
+
               let li = document.createElement('li');
               li.setAttribute("class", "nav-item")
 
-              let a = document.createElement('button');
+              //let a = document.createElement('button');
 
-              a.className = "nav-link";
+              //a.className = "nav-link";
 
               let nomeTabela = "tabela" + i
-              
-              //a.setAttribute('v-on:click',"verTabela(" + i + ")");
 
-              a.innerHTML = nomeTab
+              tabClone.innerHTML = nomeTab
 
-              li.appendChild(a)
-              tabs.appendChild(li);
+              //li.appendChild(a)
+              tabs.appendChild(tabClone);
 
               let tabela_base = (this.$refs.tabelaIteracoes);
 
@@ -193,7 +196,7 @@ export default {
               tabelaClone.setAttribute("id", nomeTabela)
               tabelaClone.setAttribute("ref", nomeTabela)
 
-              a.addEventListener("click", function(){
+              tabClone.addEventListener("click", function(){
                 for(let i = 1; i < quantTabs; i++){
                   let e = document.getElementById("tabela" + i)
                   console.log(e)
