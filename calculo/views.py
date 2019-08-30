@@ -41,15 +41,13 @@ Seguido por a::b=>
 def serializadorDeResposta(lista_resposta):
 	resposta = ""
 
-	resposta += "§§§"
-
 	#Cada objeto
 	for intervalo in lista_resposta:
 		resposta += "$$$"
 
 		a = intervalo.a
 		b = intervalo.b
-		resposta += ("{}::{}=>".format(a, b))
+		resposta += ("{}::{}".format(a, b))
 
 		d = intervalo.iteracoes
 		for chave, valor in d.items():
@@ -58,10 +56,8 @@ def serializadorDeResposta(lista_resposta):
 				resposta += "{};".format(vl)
 			resposta += "]"
 
-		resposta += "&&&"
 		print(resposta)
 
-	resposta += "§§§"
 	print(resposta)
 	
 	return(resposta)

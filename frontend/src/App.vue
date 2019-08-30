@@ -2,7 +2,7 @@
 <div class="app">
   <div id="app">
     <!--- --->
-    <img src="https://vuejs.org/images/logo.png">
+    <img src="https://cdn1.iconfinder.com/data/icons/dotted-charts/512/hyperbole_plot-2-512.png">
   </div>
 
   <header class="Funcao">
@@ -74,11 +74,6 @@
         </div>
       </div>
 
-      <div class="criterioDeParada">
-        <div>
-          <p>Criterio de parada: {{criterioDeParada}}</p>
-        </div>
-      </div>
     </div>
 
     <aside class="botaoCalcular">
@@ -88,6 +83,7 @@
     </aside>
   </div>
 
+  <b-table striped hover :items="items"></b-table>
   
   <footer>
     <div>
@@ -100,23 +96,31 @@
 </template>
 
 <script>
-import DjanguladoraAPI from './services/DjanguladoraAPI';
 import { VueMathjax } from 'vue-mathjax';
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Vue from 'vue'
+import Tabela from './Tabela.vue'
+import BootstrapVue from 'bootstrap-vue'
  
 Vue.use(VueAxios, axios)
 export default {
   components: {
-    'vue-mathjax': VueMathjax
+    'vue-mathjax': VueMathjax,
+    'tabela-resposta': Tabela
   },
   name: 'App',
   data () {
     return {
       fdex: '$$f(x)=$$',
       epsilon: '$$\\varepsilon$$',
-      criterioDeParada: 'não implementado'
+      info: 'Em desenvolvimento',
+      items: [
+          { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
+          { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
+          { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
+          { age: 38, first_name: 'Jami', last_name: 'Carney' }
+        ]
     }
   },methods: {
     calcular: function(){
@@ -139,7 +143,40 @@ export default {
         ]
         axios.post('http://localhost:8000/calculo/', arr)
             .then(function (response) {
-              console.log(response);
+              self.this.items.push({ age: 9999, first_name: 'bbbbbbbbbbbb', last_name: 'aaaaaaaaaaaaaaa' })
+              
+              var dados = response.data
+              console.log(dados);
+
+              var lDados = dados.split("$$$")
+              console.log(lDados)
+
+              // Começando em 1 por causa dos caracteres especiais de inicio da respostas
+              for (let i = 1; i < lDados.length; i++){
+                var interacoes = lDados[i].split("#")
+                console.log(interacoes)
+
+                let valores_intervalo = interacoes[0].split("::")
+                console.log(valores_intervalo)
+                let arr_valores_intervalo = []
+                for (let j = 1; j < interacoes.length; j++){
+                  let str_da_vez = interacoes[j]
+                  console.log(interacoes[j])
+                  let num_iteracao = str_da_vez.substring(0,str_da_vez.indexOf("["))
+                  console.log(num_iteracao)
+
+                  let valores_lista = str_da_vez.substring(str_da_vez.indexOf("[")+1,str_da_vez.indexOf("]")).split(";")
+                  console.log(valores_lista)
+                  let valor_x = valores_lista[0]
+                  let valor_fdex = valores_lista[1]
+                  let valor_b_a = valores_lista[2]
+                  let linha = {interacao: num_iteracao, x: valor_x, fdex:valor_fdex, b_a: valor_b_a}
+                  // this.items.push({ age: 9999, first_name: 'bbbbbbbbbbbb', last_name: 'aaaaaaaaaaaaaaa' })
+                }
+
+              }
+              
+              
             })
             .catch(function (error) {
               console.log(error);
