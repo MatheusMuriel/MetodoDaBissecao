@@ -15,10 +15,6 @@ import json
 
 index_view = never_cache(TemplateView.as_view(template_name='index.html'))
 
-def home(request):
-	template = loader.get_template('index.html')
-	return HttpResponse(template.render({},request))
-
 @csrf_exempt
 def calcular(request):
 	if request.method == 'POST':
