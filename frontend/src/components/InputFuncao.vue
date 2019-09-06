@@ -3,8 +3,8 @@
     <div class="div-input">
       <b-form-input
         v-autowidth="{maxWidth: '960px', minWidth: '25px', comfortZone: 4}"
-        v-bind:value="valor"
-        v-on:input="$emit('input', $event.target.value)"
+        v-model="inputValue"
+        v-on:change="atualizarPai"
         type="number"/>
     </div>
     <Funcao class="label-funcao" :funcao="formula_funcao"></Funcao>
@@ -18,10 +18,15 @@ export default {
     Funcao
   },
   name: 'InputFuncao',
-  props: ['formula_funcao', 'valor'],
+  props: ['formula_funcao', 'valor', 'indice'],
   data () {
     return {
-      inputValue: 0
+      inputValue: ''
+    }
+  },
+  methods: {
+    atualizarPai () {
+      this.$emit('mudouValor', {indice: this.indice, valor: this.inputValue})
     }
   }
 }

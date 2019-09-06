@@ -9,8 +9,8 @@ export default {
   name: 'plotador',
   props: {
     title: String,
-    gn: Array,
-    hn: Array,
+    gn: String,
+    hn: String,
     grid: Boolean
   },
   created () {

@@ -10,27 +10,20 @@
         <b-col cols="4">
           <div class="input-funcao">
             <funcao funcao="$$f(x)=$$"></funcao>
-            <input-funcao ref="x5" formula_funcao="$$x^5$$" v-model="x5v" v-bind:valor="x5v"></input-funcao>
+            <input-funcao ref="x5" indice="0" formula_funcao="$$x^5$$" @mudouValor="atualizaValor"></input-funcao>
             <funcao funcao="$$+$$"></funcao>
-            <input-funcao ref="x4" formula_funcao="$$x^4$$" v-model="x4v" v-bind:valor="x4v"></input-funcao>
+            <input-funcao ref="x4" indice="1" formula_funcao="$$x^4$$" @mudouValor="atualizaValor"></input-funcao>
             <funcao funcao="$$+$$"></funcao>
-            <input-funcao ref="x3" formula_funcao="$$x^3$$" v-model="x3v" v-bind:valor="x3v"></input-funcao>
+            <input-funcao ref="x3" indice="2" formula_funcao="$$x^3$$" @mudouValor="atualizaValor" ></input-funcao>
             <funcao funcao="$$+$$"></funcao>
-            <input-funcao ref="x2" formula_funcao="$$x^2$$" v-model="x2v" v-bind:valor="x2v"></input-funcao>
+            <input-funcao ref="x2" indice="3" formula_funcao="$$x^2$$" @mudouValor="atualizaValor"></input-funcao>
             <funcao funcao="$$+$$"></funcao>
-            <input-funcao ref="x1" formula_funcao="$$x$$" v-model="x1v" v-bind:valor="x1v"></input-funcao>
+            <input-funcao ref="x1" indice="4" formula_funcao="$$x$$" @mudouValor="atualizaValor"></input-funcao>
             <funcao funcao="$$+$$"></funcao>
-            <input-funcao ref="xf" formula_funcao="$$$$" v-model="xfv" v-bind:valor="xfv"></input-funcao>
+            <input-funcao ref="xf" indice="5" formula_funcao="$$$$" @mudouValor="atualizaValor"></input-funcao>
           </div>
         </b-col>
       </b-row>
-
-      <!--
-      <b-row align-h="center">
-        <p>Função completa: </p>
-        <funcao funcao="'$$' + {{x1v}} + '$$'"></funcao>
-      </b-row>
-      -->
 
       <b-row>
         <br/>
@@ -38,7 +31,7 @@
 
       <b-row align-h="around">
         <b-col>
-          <input-funcao class="input-epsilon" ref="epsilon" formula_funcao="$$\varepsilon$$" v-model="epsilonV" v-bind:valor="epsilonV"></input-funcao>
+          <input-funcao class="input-epsilon" ref="epsilon" indice="6" formula_funcao="$$\varepsilon$$" @mudouValor="atualizaValor"></input-funcao>
         </b-col>
         <b-col><b-button variant="outline-primary" @click="calcular()">Calcular</b-button></b-col>
       </b-row>
@@ -50,12 +43,6 @@
 
         <b-col cols="6" ref="rowTabelas"></b-col>
       </b-row>
-
-      <!--
-      <b-row ref="rowTabelas" align-h="center">
-
-      </b-row>
-      -->
 
     </b-container>
 
@@ -85,13 +72,7 @@ export default {
   },
   data () {
     return {
-      x5v: '0',
-      x4v: '0',
-      x3v: '1',
-      x2v: '0',
-      x1v: '-9',
-      xfv: '3',
-      epsilonV: '-3',
+      valores: [0, 0, 0, 0, 0, 0, 0],
       codFuncaoCompleta: '$$$$',
       dados_resultado: ''
     }
@@ -99,8 +80,7 @@ export default {
   methods: {
     calcular () {
       this.plotarGrafico()
-      var arrValores = [this.x5v, this.x4v, this.x3v, this.x2v, this.x1v, this.xfv, this.epsilonV]
-      this.axios.post('http://localhost:8000/calculo/', arrValores)
+      this.axios.post('http://matheusmuriel.pythonanywhere.com/calculo/', this.valores)
         .then((response) => {
           let dados = response.data
 
@@ -114,8 +94,15 @@ export default {
       // Plota grafico da função
       // g(x)
       // h(x)
-      let arrValores = [this.x5v, 'x^5 + ', this.x4v, 'x^4 + ', this.x3v, 'x^3 + ', this.x2v, 'x^2 + ', this.x1v, 'x^1 + ', this.xfv]
-      let strFuncao = arrValores.join('')
+      let v = this.valores
+      let l = ['x^5 + ', 'x^4 + ', 'x^3 + ', 'x^2 + ', 'x^1 + ', '']
+      let newArr = []
+      for (let i = 0; i < v.length; i++) {
+        newArr.push(v[i])
+        newArr.push(l[i])
+      }
+      let strFuncao = newArr.join('')
+      console.log('Funcao para plotar: ', strFuncao)
 
       let PlotClass = Vue.extend(Plotador)
       let instanciaPlot = new PlotClass({
@@ -161,6 +148,9 @@ export default {
       instanciaTabTabelas.$mount()
 
       return instanciaTabTabelas
+    },
+    atualizaValor (payload) {
+      this.valores[payload.indice] = payload.valor
     }
   }
 }
