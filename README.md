@@ -30,8 +30,6 @@ Professora: Tania Camila Kochmanscky Goulart
 
 Calculo feito utilizando o método da [Bisseção](https://pt.wikipedia.org/wiki/M%C3%A9todo_da_bisse%C3%A7%C3%A3o).
 
->O desenvolvimento desse projeto teve a motivação de aprender novas tecnologias, logo não conta com as melhores boas praticas de desenvolvimento.
-
 ## Como testar
 
 Para executar localmente a aplicação você vai precisar ter [Git](https://git-scm.com), [Python](https://www.python.org/) e [npm](http://npmjs.com) instalados em seu computador.
