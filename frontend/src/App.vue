@@ -1,8 +1,7 @@
 <template>
   <div id="app">
-
-    <div ref="funcao-completa">
-      <funcao :funcao="codFuncaoCompleta"></funcao>
+    <div  class="position-absolute fixed-top">
+      <b-img src="https://image.flaticon.com/icons/png/512/51/51661.png" alt="Logo" width="50"></b-img>
     </div>
 
     <b-container class="bv-example-row">
@@ -10,17 +9,17 @@
         <b-col cols="4">
           <div class="input-funcao">
             <funcao funcao="$$f(x)=$$"></funcao>
-            <input-funcao ref="x5" indice="0" formula_funcao="$$x^5$$" @mudouValor="atualizaValor"></input-funcao>
+            <input-funcao ref="x5" indice="0" formula_funcao="$$x^5$$" @mudouValor="atualizaValor" v="0"></input-funcao>
             <funcao funcao="$$+$$"></funcao>
-            <input-funcao ref="x4" indice="1" formula_funcao="$$x^4$$" @mudouValor="atualizaValor"></input-funcao>
+            <input-funcao ref="x4" indice="1" formula_funcao="$$x^4$$" @mudouValor="atualizaValor" v="0"></input-funcao>
             <funcao funcao="$$+$$"></funcao>
-            <input-funcao ref="x3" indice="2" formula_funcao="$$x^3$$" @mudouValor="atualizaValor" ></input-funcao>
+            <input-funcao ref="x3" indice="2" formula_funcao="$$x^3$$" @mudouValor="atualizaValor" v="1"></input-funcao>
             <funcao funcao="$$+$$"></funcao>
-            <input-funcao ref="x2" indice="3" formula_funcao="$$x^2$$" @mudouValor="atualizaValor"></input-funcao>
+            <input-funcao ref="x2" indice="3" formula_funcao="$$x^2$$" @mudouValor="atualizaValor" v="0"></input-funcao>
             <funcao funcao="$$+$$"></funcao>
-            <input-funcao ref="x1" indice="4" formula_funcao="$$x$$" @mudouValor="atualizaValor"></input-funcao>
+            <input-funcao ref="x1" indice="4" formula_funcao="$$x$$" @mudouValor="atualizaValor" v="-9"></input-funcao>
             <funcao funcao="$$+$$"></funcao>
-            <input-funcao ref="xf" indice="5" formula_funcao="$$$$" @mudouValor="atualizaValor"></input-funcao>
+            <input-funcao ref="xf" indice="5" formula_funcao="$$$$" @mudouValor="atualizaValor" v="3"></input-funcao>
           </div>
         </b-col>
       </b-row>
@@ -31,7 +30,7 @@
 
       <b-row align-h="around">
         <b-col>
-          <input-funcao class="input-epsilon" ref="epsilon" indice="6" formula_funcao="$$\varepsilon$$" @mudouValor="atualizaValor"></input-funcao>
+          <input-funcao class="input-epsilon" ref="epsilon" indice="6" formula_funcao="$$\varepsilon$$" @mudouValor="atualizaValor" v="-3"></input-funcao>
         </b-col>
         <b-col><b-button variant="outline-primary" @click="calcular()">Calcular</b-button></b-col>
       </b-row>
@@ -46,12 +45,10 @@
 
     </b-container>
 
-    <footer class="footer">
-      <div>
-        {{ info }}
-        <a href="https://github.com/MatheusMuriel/Djanguladora">GitHub</a>
-      </div>
-    </footer>
+    <div class="fixed-bottom rodape">
+      Muriel e Manhani -
+      <a href="https://github.com/MatheusMuriel/Djanguladora"> Github </a>
+    </div>
 
   </div>
 </template>
@@ -91,9 +88,6 @@ export default {
         })
     },
     plotarGrafico () {
-      // Plota grafico da função
-      // g(x)
-      // h(x)
       let v = this.valores
       let l = ['x^5 + ', 'x^4 + ', 'x^3 + ', 'x^2 + ', 'x^1 + ', '']
       let newArr = []
@@ -106,7 +100,7 @@ export default {
 
       let PlotClass = Vue.extend(Plotador)
       let instanciaPlot = new PlotClass({
-        propsData: {title: 'Grafico da função', gn: strFuncao, hn: 'x', grid: true}
+        propsData: {title: 'Grafico da função', gn: strFuncao, hn: '', grid: true}
       })
       instanciaPlot.$mount()
 
@@ -184,5 +178,8 @@ export default {
   align-items: center;
   font-size: 20px;
   white-space: nowrap;
+}
+.rodape {
+  background-color: white;
 }
 </style>

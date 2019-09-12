@@ -1,7 +1,7 @@
 {
-  "name": "vueadora",
-  "version": "1.0.0",
-  "description": "Frontend para Djanguladora",
+  "name": "djanguladora",
+  "version": "1.2.0",
+  "description": "Frontend da Djanguladora",
   "author": "Muriel <matheus.muriel@outlook.com>",
   "private": true,
   "scripts": {
@@ -17,7 +17,7 @@
     "vue": "^2.6.10",
     "vue-axios": "^2.1.4",
     "vue-input-autowidth": "^1.0.7",
-    "vue-mathjax": "0.0.11"
+    "vue-mathjax": "^0.0.11"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -66,7 +66,7 @@
     "webpack": "^3.12.0",
     "webpack-bundle-analyzer": "^3.4.1",
     "webpack-bundle-tracker": "^0.4.2-beta",
-    "webpack-dev-server": "^2.9.1",
+    "webpack-dev-server": "^2.11.5",
     "webpack-merge": "^4.1.0",
     "write-file-webpack-plugin": "^4.5.1"
   },

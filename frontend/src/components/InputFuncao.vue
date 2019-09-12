@@ -2,6 +2,7 @@
   <div class="input-funcao">
     <div class="div-input">
       <b-form-input
+        ref="inputCamp"
         v-autowidth="{maxWidth: '960px', minWidth: '25px', comfortZone: 4}"
         v-model="inputValue"
         v-on:change="atualizarPai"
@@ -18,10 +19,10 @@ export default {
     Funcao
   },
   name: 'InputFuncao',
-  props: ['formula_funcao', 'valor', 'indice'],
+  props: ['formula_funcao', 'v', 'indice'],
   data () {
     return {
-      inputValue: ''
+      inputValue: '0'
     }
   },
   methods: {
