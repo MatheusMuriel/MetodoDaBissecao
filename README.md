@@ -53,7 +53,7 @@ $ npm run build
 
 # Instale as dependencias do backend
 $ cd ..
-$ pip install -r requeriments.txt
+$ pip -r install requeriments.txt
 
 # Inicie o servidor do Django
 $ python manage.py collectstatic
