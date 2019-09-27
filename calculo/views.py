@@ -14,6 +14,7 @@ import json
 
 index_view = never_cache(TemplateView.as_view(template_name='index.html'))
 
+# ---- Metodo da Bisseção ----
 @csrf_exempt
 def calcular(request):
 	if request.method == 'POST':
@@ -23,34 +24,13 @@ def calcular(request):
 		sc = serializadorDeResposta(c)
 		return HttpResponse(sc)
 
-
 def spliter_request(dados):
 	dados_limpos = re.sub(r"(\[|\]|\\|\'|b|\")","",dados)
 	return dados_limpos.split(",")
 
-@csrf_exempt
-def gauss(request):
-	if request.method == 'POST':
-		dados = str(request.body)
-		v = spliter_request_gauss(dados)
-		c = executarCalculoGauss(v)
-		#sc = serializadorDeResposta(c)
-		return HttpResponse('AAAAAAAAAAAAAAAAAAA')
-	pass
-
-def spliter_request_gauss(dados):
-	str_limpa = dados[2:-1]
-	arrDados = re.sub(r"({|}|\")","", str_limpa).split(",")
-	dictMaptriz = {}
-	for item in arrDados:
-		arrItem = item.split(":")
-		chave = arrItem[0]
-		valor = float(arrItem[1])
-		dictMaptriz[chave] = valor
-		
-
-	return dictMaptriz
-
+def executarCalculo(x5, x4, x3, x2, x1, x, epsilon):
+	calc = factor(x5, x4, x3, x2, x1, x, epsilon)
+	return calc.calcular()
 
 """
 Cada intervalor começa e termina com $$$
@@ -81,9 +61,40 @@ def serializadorDeResposta(lista_resposta):
 	return(resposta)
 
 
-def executarCalculo(x5, x4, x3, x2, x1, x, epsilon):
-	calc = factor(x5, x4, x3, x2, x1, x, epsilon)
-	return calc.calcular()
+# ---- Metodo da Gauss ----
+@csrf_exempt
+def gauss(request):
+	if request.method == 'POST':
+		dados = str(request.body)
+		v = spliter_request_gauss(dados)
+		c = executarCalculoGauss(v)
+		sc = serializadorDeRespostaGauss(c)
+		return HttpResponse(sc)
+	pass
+
+def spliter_request_gauss(dados):
+	str_limpa = dados[2:-1]
+	arrDados = re.sub(r"({|}|\")","", str_limpa).split(",")
+	dictMaptriz = {}
+	for item in arrDados:
+		arrItem = item.split(":")
+		chave = arrItem[0]
+		valor = float(arrItem[1])
+		dictMaptriz[chave] = valor
+		
+
+	return dictMaptriz
+
 def executarCalculoGauss(dictMap):
 	gauss = factory(dictMap)
 	return gauss.calcular()
+
+def serializadorDeRespostaGauss(dictResposta):
+	matriz_x = str(dictResposta['matriz_x'])
+	passos = ""
+	
+	for passo in dictResposta['passos']:
+		passos += str(passo)
+
+	resposta = matriz_x + "§§§" + passos
+	return(resposta)

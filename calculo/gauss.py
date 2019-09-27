@@ -9,6 +9,8 @@ class CalculadoraGauss():
         self.matrizB = np.copy(B)
         self.matrizX = []
         self.passos = []
+        self.Passo.contador = 1
+
 
     def GENP(self, a, b):
         
@@ -29,7 +31,8 @@ class CalculadoraGauss():
                 #Equation solution column
                 b[row] = b[row] - multiplier*b[pivot_row]
                 a[row][pivot_row] = 0
-                self.passos.append(Passo(a, b))
+                #self.passos.append(Passo(a, b))
+                self.passos.append(self.Passo(a, b))
 
             ##Aqui vira a iteração 
 
@@ -45,19 +48,37 @@ class CalculadoraGauss():
         matriz_x = self.GENP(self.matrizA, self.matrizB)
         self.matrizX = np.array(matriz_x)
         
-        resposta = {'matriz_x': self.matrizX, 'passos': self.passos}
+        list_x = [valor for valor in self.matrizX]
+        resposta = {'matriz_x': list_x, 'passos': self.passos}
         return resposta
 
-"""
-TAD para representar um passo da resposta
-"""
-class Passo():
-    contador = 1
-    def __init__(self, A, B):
-        self.matrizA = np.copy(A)
-        self.matrizB = np.copy(B)
-        self.numero_passo = self.__class__.contador
-        self.__class__.contador += 1
+    """
+    TAD para representar um passo da resposta
+    """
+    class Passo():
+        contador = 1
+        def __init__(self, A, B):
+            self.matrizA = self.convertArrayNumPy(np.copy(A))
+            self.matrizB = self.convertArrayNumPy(np.copy(B))
+            self.numero_passo = self.__class__.contador
+            self.__class__.contador += 1
+        
+        def convertArrayNumPy(self, array_numpy):
+                nova_lista = []
+                for i in array_numpy:
+                    lista_aux = []
+                    for j in i:
+                        lista_aux.append(j)
+                    nova_lista.append(lista_aux)
+                return nova_lista
+        
+        def __str__(self):
+            strA = str(self.matrizA)
+            strB = str(self.matrizB)
+            strNumPasso = str(self.numero_passo)
+
+            strPasso = "$$$" + strNumPasso + "###" + strA + "&&&" + strB
+            return strPasso
 
 
 def constroi_matriz_A(dictMatriz):
