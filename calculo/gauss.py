@@ -5,47 +5,60 @@ class CalculadoraGauss():
 
     def __init__(self, A, B):
         # A*X = B
-        self.matrizA = A
-        self.matrizB = B
+        self.matrizA = np.copy(A)
+        self.matrizB = np.copy(B)
         self.matrizX = []
-        pass
+        self.passos = []
 
-    def GENP(A, b):
+    def GENP(self, a, b):
         
-        n =  len(A)
+        n =  len(a)
         
         for pivot_row in range(n-1):
 
             for row in range(pivot_row+1, n):
-                v1 = A[row][pivot_row]
-                v2 = A[pivot_row][pivot_row]
+                v1 = a[row][pivot_row]
+                v2 = a[pivot_row][pivot_row]
 
                 multiplier = v1 / v2
 
                 #the only one in this column since the rest are zero
-                A[row][pivot_row] = multiplier
+                a[row][pivot_row] = multiplier
                 for col in range(pivot_row + 1, n):
-                    A[row][col] = A[row][col] - multiplier*A[pivot_row][col]
+                    a[row][col] = a[row][col] - multiplier*a[pivot_row][col]
                 #Equation solution column
                 b[row] = b[row] - multiplier*b[pivot_row]
-                A[row][pivot_row] = 0
+                a[row][pivot_row] = 0
+                self.passos.append(Passo(a, b))
 
             ##Aqui vira a iteração 
 
-
-        # print (A
-        # print b
         x = np.zeros(n)
         k = n-1
-        x[k] = b[k]/A[k,k]
+        x[k] = b[k]/a[k,k]
         while k >= 0:
-            x[k] = (b[k] - np.dot(A[k,k+1:],x[k+1:]))/A[k,k]
+            x[k] = (b[k] - np.dot(a[k,k+1:],x[k+1:]))/a[k,k]
             k = k-1
         return x
 
-    #if __name__ == "__main__":
+    def calcular(self):
+        matriz_x = self.GENP(self.matrizA, self.matrizB)
+        self.matrizX = np.array(matriz_x)
         
-        #print(GENP(np.copy(A), np.copy(b)))
+        resposta = {'matriz_x': self.matrizX, 'passos': self.passos}
+        return resposta
+
+"""
+TAD para representar um passo da resposta
+"""
+class Passo():
+    contador = 1
+    def __init__(self, A, B):
+        self.matrizA = np.copy(A)
+        self.matrizB = np.copy(B)
+        self.numero_passo = self.__class__.contador
+        self.__class__.contador += 1
+
 
 def constroi_matriz_A(dictMatriz):
     n = int(math.sqrt( len(dictMatriz) ))
@@ -73,8 +86,8 @@ def constroi_matriz_B(dictMatriz):
     return np.array(matriz)
 
 def factory(dictMatriz):
-    aaux = constroi_matriz_A(dictMatriz)
-    baux = constroi_matriz_B(dictMatriz)
+    matriz_a = constroi_matriz_A(dictMatriz)
+    matriz_b = constroi_matriz_B(dictMatriz)
 
     A = np.array([  [1.0, 2.0, 3.0, 4.0],
                     [2.0, 1.0, 2.0, 3.0],
@@ -82,4 +95,7 @@ def factory(dictMatriz):
                     [4.0, 3.0, 2.0, 1.0]])
     b =  np.array([[10.],[7.],[6.],[5.]])
 
+    # Array fixo para testes
     return CalculadoraGauss(A, b)
+
+    #return CalculadoraGauss(matriz_a, matriz_b)
