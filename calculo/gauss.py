@@ -13,6 +13,9 @@ class CalculadoraGauss():
 
 
     def GENP(self, a, b):
+
+        print(a)
+        print(b)
         
         n =  len(a)
         
@@ -31,8 +34,8 @@ class CalculadoraGauss():
                 #Equation solution column
                 b[row] = b[row] - multiplier*b[pivot_row]
                 a[row][pivot_row] = 0
-                #self.passos.append(Passo(a, b))
-                self.passos.append(self.Passo(a, b))
+                passo = self.Passo(a, b)
+                self.passos.append(passo)
 
             ##Aqui vira a iteração 
 
@@ -87,7 +90,7 @@ def constroi_matriz_A(dictMatriz):
     matriz = []
     for linha in range(1, n+1): 
         linha_aux = []
-        for coluna in range(1, n):
+        for coluna in range(1, n+1):
             nome = str(linha) + str(coluna)
             valor = dictMatriz[nome]
             linha_aux.append(valor)
@@ -100,7 +103,7 @@ def constroi_matriz_B(dictMatriz):
     
     matriz = []
     for linha in range(1, n+1):
-        nome = str(linha) + str(n) 
+        nome = str(linha) + str(n+1) 
         valor = dictMatriz[nome]
         matriz.append(valor)
 
