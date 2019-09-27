@@ -4,5 +4,6 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     url(r'^calculo/$', calcular, name='calcular'),
-    url('', index_view),     
+    url(r'^gauss/$', gauss, name='gauss'),
+    #url('', index_view),
 ]

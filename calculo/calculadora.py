@@ -92,7 +92,6 @@ class CalculadoraFuncao():
 """
 Tad para representar um resposta
 """
-
 class Intervalo():
 
     def __init__(self, a, b):
