@@ -14,9 +14,6 @@ class CalculadoraGauss():
 
     def GENP(self, a, b):
 
-        print(a)
-        print(b)
-        
         n =  len(a)
         
         for pivot_row in range(n-1):
@@ -62,7 +59,7 @@ class CalculadoraGauss():
         contador = 1
         def __init__(self, A, B):
             self.matrizA = self.convertArrayNumPy(np.copy(A))
-            self.matrizB = self.convertArrayNumPy(np.copy(B))
+            self.matrizB = [valor for valor in B]
             self.numero_passo = self.__class__.contador
             self.__class__.contador += 1
         
