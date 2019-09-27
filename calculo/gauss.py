@@ -117,6 +117,6 @@ def factory(dictMatriz):
     b =  np.array([[10.],[7.],[6.],[5.]])
 
     # Array fixo para testes
-    return CalculadoraGauss(A, b)
+    # return CalculadoraGauss(A, b)
 
-    #return CalculadoraGauss(matriz_a, matriz_b)
+    return CalculadoraGauss(matriz_a, matriz_b)
