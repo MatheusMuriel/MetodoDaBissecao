@@ -3,7 +3,7 @@ import math
 
 class CalculadoraGauss():
 
-  def __init__(self, A, B, L):
+  def __init__(self, A, B, L, dict_linhas):
     # A*X = B
     self.matrizA = np.copy(A)
     self.matrizB = np.copy(B)
@@ -11,6 +11,17 @@ class CalculadoraGauss():
     self.passos = []
     self.Passo.contador = 1
     self.matriz_lost = L
+    self.dict_linhas = dict_linhas
+
+  def swap_linha(self, linha_1, linha_2):
+    linha_1 - str(linha_1)
+    linha_2 - str(linha_2)
+
+    valor_l1 = self.dict_linhas[linha_1]
+    valor_l2 = self.dict_linhas[linha_2]
+
+    self.dict_linhas[linha_1] = valor_l2
+    self.dict_linhas[linha_2] = valor_l1
 
   def GENP(self, a, b):
 
@@ -121,6 +132,14 @@ def constroi_matriz_L(tamanho):
     matriz.append(linha)
   return matriz
 
+def constroi_dict_linhas(tamanho):
+  dict_linhas = {}
+  
+  for i in range(0, tamanho):
+    dict_linhas[str(i)] = i
+
+  return dict_linhas
+
 def factory(dictMatriz):
   matriz_a = constroi_matriz_A(dictMatriz)
   matriz_b = constroi_matriz_B(dictMatriz)
@@ -128,6 +147,7 @@ def factory(dictMatriz):
 
   return CalculadoraGauss(matriz_a, matriz_b, matriz_l)
 
+inf = False
 
 Ai = np.array([  [2., -3., 1.],
                 [4., -6., -1.],
@@ -135,15 +155,18 @@ Ai = np.array([  [2., -3., 1.],
 
 bi =  np.array([[-5.],[-7.],[4.]])
 
-A = np.array([  [1.0, 2.0, 3.0, 4.0],
+An = np.array([  [1.0, 2.0, 3.0, 4.0],
                 [2.0, 1.0, 2.0, 3.0],
                 [3.0, 2.0, 1.0, 2.0],
                 [4.0, 3.0, 2.0, 1.0]])
 
-b =  np.array([[10.],[7.],[6.],[5.]])
+bn =  np.array([[10.],[7.],[6.],[5.]])
+
+A = Ai if inf else An
+b = bi if inf else bn
 
 l = constroi_matriz_L(len(A)-1)
+dict_linhas = constroi_dict_linhas(len(A))
 
 claz = CalculadoraGauss(A, b, l)
-#claz = CalculadoraGauss(Ai, bi, l)
 claz.calcular()
