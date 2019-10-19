@@ -7,10 +7,10 @@ class CalculadoraGauss():
     # A*X = B
     self.matrizA = np.copy(A)
     self.matrizB = np.copy(B)
-    self.matrizX = []
+    self.matrizX = np.zeros(len(A))
     self.passos = []
     self.Passo.contador = 1
-    self.matriz_lost = L
+    self.matriz_lost = np.copy(L)
     self.dict_linhas = dict_linhas
 
   def swap_linha(self, linha_1, linha_2):
@@ -39,12 +39,14 @@ class CalculadoraGauss():
         if (multiplier == np.Infinity):
           print("Zeroooo")
         
+        #Anota o valor para a matriz L
         self.matriz_lost[row][pivot_row] = multiplier
 
         #the only one in this column since the rest are zero
         a[row][pivot_row] = multiplier
         for col in range(pivot_row + 1, n):
           a[row][col] = a[row][col] - multiplier*a[pivot_row][col]
+        
         #Equation solution column
         b[row] = b[row] - multiplier*b[pivot_row]
         a[row][pivot_row] = 0
@@ -53,20 +55,38 @@ class CalculadoraGauss():
 
       ##Aqui vira a iteração 
 
-    x = np.zeros(n)
+    #matriz_x = np.zeros(n)
     k = n-1
-    x[k] = b[k]/a[k,k]
+    self.matrizX[k] = b[k]/a[k,k]
     while k >= 0:
-      x[k] = (b[k] - np.dot(a[k,k+1:],x[k+1:]))/a[k,k]
+      self.matrizX[k] = (b[k] - np.dot(a[k,k+1:],self.matrizX[k+1:]))/a[k,k]
       k = k-1
-    return x
+
+    return a
+
+  def convert_numpy(self, arr_numpy):
+    saida = []
+    for linha in arr_numpy:
+      linha_convertida = []
+      for coluna in linha:
+        linha_convertida.append(coluna)
+      saida.append(linha_convertida)
+
+    return saida
 
   def calcular(self):
-    matriz_x = self.GENP(self.matrizA, self.matrizB)
-    self.matrizX = np.array(matriz_x)
+    resultado = self.GENP(self.matrizA, self.matrizB)
     
-    list_x = [valor for valor in self.matrizX]
-    resposta = {'matriz_x': list_x, 'passos': self.passos}
+    matriz_x = [valor for valor in self.matrizX]
+    matriz_l = self.convert_numpy(self.matriz_lost)
+    matriz_u = self.convert_numpy(resultado)
+
+    resposta = {'passos': self.passos,
+                'matriz_X': matriz_x,
+                'matriz_L': matriz_l,
+                'matriz_U': matriz_u
+                }
+
     return resposta
 
   """
@@ -143,24 +163,31 @@ def constroi_dict_linhas(tamanho):
 def factory(dictMatriz):
   matriz_a = constroi_matriz_A(dictMatriz)
   matriz_b = constroi_matriz_B(dictMatriz)
-  matriz_l = constroi_matriz_L(len(matriz_a))
 
-  return CalculadoraGauss(matriz_a, matriz_b, matriz_l)
+  n = len(matriz_a)
+
+  matriz_l = constroi_matriz_L(n-1)
+  dict_linhas = constroi_dict_linhas(n)
+
+  return CalculadoraGauss(matriz_a, matriz_b, matriz_l, dict_linhas)
 
 inf = False
 
-Ai = np.array([  [2., -3., 1.],
+Ai = np.array([ [2., -3., 1.],
                 [4., -6., -1.],
                 [1., 2., 1.]])
 
 bi =  np.array([[-5.],[-7.],[4.]])
 
-An = np.array([  [1.0, 2.0, 3.0, 4.0],
-                [2.0, 1.0, 2.0, 3.0],
-                [3.0, 2.0, 1.0, 2.0],
-                [4.0, 3.0, 2.0, 1.0]])
+An = np.array([ [1.0, 2.0, 3.0],
+                [2.0, 1.0, 2.0],
+                [3.0, 2.0, 1.0]
+              ])
 
-bn =  np.array([[10.],[7.],[6.],[5.]])
+bn =  np.array([  [9.],
+                  [7.],
+                  [6.]
+                ])
 
 A = Ai if inf else An
 b = bi if inf else bn
@@ -168,5 +195,5 @@ b = bi if inf else bn
 l = constroi_matriz_L(len(A)-1)
 dict_linhas = constroi_dict_linhas(len(A))
 
-claz = CalculadoraGauss(A, b, l)
+claz = CalculadoraGauss(A, b, l, dict_linhas)
 claz.calcular()

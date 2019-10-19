@@ -62,6 +62,8 @@ def serializadorDeResposta(lista_resposta):
 
 
 # ---- Metodo da Gauss ----
+# Exemplo de request curl:
+# curl 'http://localhost:8000/gauss/' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:70.0) Gecko/20100101 Firefox/70.0' -H 'Accept: application/json, text/plain, */*' -H 'Accept-Language: en-US,en;q=0.5' --compressed -H 'Content-Type: application/x-www-form-urlencoded' -H 'Origin: http://localhost:8080' -H 'Connection: keep-alive' -H 'Referer: http://localhost:8080/' --data '{"11":1,"12":"2","13":"3","14":"10","21":"4","22":"5","23":"6","24":"20","31":"7","32":"8","33":"9","34":"30"}'
 @csrf_exempt
 def gauss(request):
 	if request.method == 'POST':
@@ -70,7 +72,6 @@ def gauss(request):
 		c = executarCalculoGauss(v)
 		sc = serializadorDeRespostaGauss(c)
 		return HttpResponse(sc)
-	pass
 
 def spliter_request_gauss(dados):
 	str_limpa = dados[2:-1]
@@ -90,11 +91,14 @@ def executarCalculoGauss(dictMap):
 	return gauss.calcular()
 
 def serializadorDeRespostaGauss(dictResposta):
-	matriz_x = str(dictResposta['matriz_x'])
-	passos = ""
-	
-	for passo in dictResposta['passos']:
-		passos += str(passo)
+	passos = dictResposta['passos']
+	matriz_x = str(dictResposta['matriz_X'])
+	matriz_l = str(dictResposta['matriz_L'])
+	matriz_u = str(dictResposta['matriz_U'])
 
-	resposta = matriz_x + "§§§" + passos
+	str_passos = ""
+	for passo_i in passos:
+		str_passos += str(passo_i)
+
+	resposta = str_passos + "§§§" + matriz_x + "§§§" + matriz_l + "§§§" + matriz_u
 	return(resposta)
