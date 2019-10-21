@@ -71,13 +71,21 @@ export default {
     return {
       valores: [0, 0, 0, 0, 0, 0, 0],
       codFuncaoCompleta: '$$$$',
-      dados_resultado: ''
+      dados_resultado: '',
+      urlApi: ''
     }
+  },
+  created () {
+    let isDev = process.env.NODE_ENV === 'development'
+
+    let endereco = isDev ? 'http://localhost:8000' : 'https://matheusmuriel.pythonanywhere.com'
+
+    this.urlApi = endereco
   },
   methods: {
     calcular () {
       this.plotarGrafico()
-      this.axios.post('http://matheusmuriel.pythonanywhere.com/calculo/', this.valores)
+      this.axios.post(this.urlApi + '/bissecao/', this.valores)
         .then((response) => {
           let dados = response.data
 
